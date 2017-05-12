@@ -1,12 +1,13 @@
 var playerNameInput = document.getElementById('playerNameInput');
 var socket = io();
 
+var screenWidth = window.innerWidth;
+var screenHeight = window.innerHeight;
 var c = document.getElementById('cvs');
 var canvas = c.getContext('2d');
 c.width = screenWidth; 
 c.height = screenHeight;
-var screenWidth = window.innerWidth;
-var screenHeight = window.innerHeight;
+
 
 var KEY_ENTER = 13;
 
