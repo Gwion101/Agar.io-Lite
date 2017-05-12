@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agar.io Lite</title>
+
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+    <div id="gameAreaWrapper" style="display:none;">    
+        <div class="chatWindow">
+        	<ul class="chatWindowList" id="chatMessages"></ul>
+        	<input class="chatWindowInput" id="chatInput" type="text">
+        </div>
+        <canvas tabindex="1" id="cvs"></canvas>
+    </div>
+    <div id="startMenuWrapper">
+        <div id="startMenu">
+        	<h2 class="errorDisplay"></h2>
+            <p>Agar.io Lite</p>
+            <input type="text" tabindex="0" autofocus placeholder="Enter your name here" id="playerNameInput" />
+            <b class="input-error"></b>
+            <br />
+            <button id="startButton">Play</button>
+            <div id="howToPlay">
+            	<h2>How To Play.</h2>
+            	<ul>
+                    <li>Move your mouse in the direction you want and your player will follow</li>
+                    <li>Consume pellets and other players to grow in size.</li>
+                    <li>As your player gets bigger avoid the hazzards which will make you shrink</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/game.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "port": 3000,
+  "mapWidth":3000,
+  "mapHeight":3000,
+  "playerSize":80,
+  "maxCursorDist":200,
+  "defaultPlayerSpeed":2,
+  "pelletSize":20,
+  "pelletDensity":200,
+  "pelletColors":[
+  				"#ff0000",
+  				"#00ff00",
+  				"#ffff00",
+  				"#00ffff"
+  				],
+  "hazzardDensity":10,
+  "hazzardSize":200,
+  "hazzardColor":"#33cc33"
+}

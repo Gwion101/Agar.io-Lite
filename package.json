@@ -1,0 +1,16 @@
+{
+  "name": "FP-Agario",
+  "version": "0.0.1",
+  "description": "A basic clone of the Agar.io game.",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js"
+  },
+  "author": "Gwion Rhys Davies",
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^1.7.4",
+    "uuid": "^3.0.1"
+  }
+}
