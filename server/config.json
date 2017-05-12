@@ -15,5 +15,6 @@
   				],
   "hazzardDensity":10,
   "hazzardSize":200,
-  "hazzardColor":"#33cc33"
+  "hazzardColor":"#33cc33",
+  "hazzardDamage":1
 }

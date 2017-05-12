@@ -1,10 +1,7 @@
 
-function Chat(application) {
-	app = application;
-};
+function Chat() {};
 
-var app;
-var selfId = '';
+var selfId;
 var socket;
 var input = document.getElementById('chatInput');
 var ul = document.getElementById('chatMessages');
@@ -25,6 +22,12 @@ Chat.prototype.handleNetwork = function(socket) {
   		li = document.createElement("li");
   		li.appendChild(document.createTextNode(message));
   		ul.appendChild(li);
+  	});
+
+  	socket.on('disconnect',function(){
+  		while (ul.hasChildNodes()) {   
+    		ul.removeChild(ul.firstChild);
+		}
   	});
 
 	input.addEventListener('keypress', function (event) {

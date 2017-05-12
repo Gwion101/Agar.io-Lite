@@ -12,6 +12,10 @@ var img = {};
 	img.map = new Image();
 	img.map.src = '/img/map.svg';
 
+/**
+* Create new Player object.
+* @param {Object} the socket object.
+*/
 Game.prototype.handleNetwork = function(socket) {
 
 	this.socket = socket;
@@ -68,9 +72,11 @@ Game.prototype.handleNetwork = function(socket) {
 			mouseDistance:distance
 		});
 	}
-
 }
-
+/**
+* Handle graphics.
+* @param {Canvas} the canvas to draw the graphics onto.
+*/
 Game.prototype.handleGraphics = function(canvas) {
 	if(!app.gameRunning)
 		return;
@@ -84,12 +90,19 @@ Game.prototype.handleGraphics = function(canvas) {
 		Hazzard.list[i].draw(canvas);
 }
 
+/**
+* Setup a new game.
+*/
 Game.prototype.newGame = function(){
 	Player.list = [];
 	Pellet.list = [];
 	Hazzard.list = [];
 }
 
+/**
+* Create new Player object.
+* @param {Object} the player object values.
+*/
 var Player = function(param){
 	var self = {};
 	self.id = param.id;
@@ -122,6 +135,10 @@ var Player = function(param){
 
 Player.list = [];
 
+/**
+* Create new Pellet object.
+* @param {Object} the Pellet object values.
+*/
 var Pellet = function(param){
 	var self = {};
 	self.id = param.id;
@@ -147,6 +164,10 @@ var Pellet = function(param){
 
 Pellet.list = [];
 
+/**
+* Create new Hazzard object.
+* @param {Object} the Hazzard object values.
+*/
 var Hazzard = function(param){
 	var self = {};
 	self.id = param.id;
@@ -172,6 +193,10 @@ var Hazzard = function(param){
 
 Hazzard.list = [];
 
+/**
+* Create new Map object.
+* @param {Object} the map object values.
+*/
 var Map = function(param) {
 	self.mapWidth = param.mapWidth;
 	self.mapHeight = param.mapHeight;

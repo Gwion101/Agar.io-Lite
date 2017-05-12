@@ -1,14 +1,14 @@
 
 # Agar.io Lite
-[![Demo](https://img.shields.io/badge/demo-online-green.svg)](#demo)
+[![Demo](https://img.shields.io/badge/demo-online-green.svg)](https://agar-io-lite.herokuapp.com)
 
-An Agar.io inspired game. This is my own interpritation of the game creating the game mechanics from the ground up. 
+An Agar.io inspired game. This is my own interpritation of the game creating the game mechanics from the ground up. Using the popular Socket.IO module for websocket comunication this game is calculated on the backend and then streamd to the frontend. Preventing frontend manipulation to the game play.
 
 ---
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -42,6 +42,9 @@ You should now be able to access the client at 'http://localhost:{port number}' 
 ## TODOs
 
 -Improve game mechanics. The game pace feels a little slow.
+-Inclusion of AI. Just to make the game more interesting when no one else is around.
+-Add leaderboard.
+-Make some more intelegent random spawning
 
 ---
 

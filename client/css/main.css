@@ -29,9 +29,10 @@ canvas {
 .chatWindow .chatWindowList {
     padding: 5px;
     margin: 0;
+    height: 90%;
     list-style: none;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .chatWindow .chatWindowInput {

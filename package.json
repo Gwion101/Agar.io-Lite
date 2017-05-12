@@ -8,6 +8,10 @@
     "start": "node server/server.js"
   },
   "author": "Gwion Rhys Davies",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gwion101/Agar.io-Lite"
+  },
   "dependencies": {
     "express": "^4.15.2",
     "socket.io": "^1.7.4",
