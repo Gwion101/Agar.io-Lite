@@ -1,4 +1,5 @@
 var playerNameInput = document.getElementById('playerNameInput');
+var playerColorInput = document.getElementById('playerColorInput');
 var socket = io();
 
 var screenWidth = window.innerWidth;
@@ -21,6 +22,7 @@ function validNick() {
     return regex.exec(playerNameInput.value) !== null;
 }
 
+//
 socket.on('disconnect', function () {
     endGame();
 });
@@ -98,7 +100,7 @@ function appLoop() {
 function startGame() {
 	//sanatize the player name.
     var playerName = playerNameInput.value.replace(/(<([^>]+)>)/ig, '');
-    var baseColor = '#ffffff'
+    var baseColor = '#' + playerColorInput.value;
     socket.emit('playerJoined',{playerName,baseColor});
     //hide the login screen and hide the canvas.
     document.getElementById('gameAreaWrapper').style.display = 'block';

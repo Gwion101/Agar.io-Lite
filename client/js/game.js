@@ -132,12 +132,15 @@ var Player = function({id,x,y,size,baseColor,name}){
 		canvas.fillStyle = self.baseColor;
 		canvas.arc(x,y,radius,0,2*Math.PI);
 		canvas.fill();
+		canvas.strokeStyle="#ffffff";
+		canvas.stroke();
 
 		canvas.fillStyle = '#ffffff';
 		canvas.font = 'bold ' + self.size/4 + 'px Verdana';
 		canvas.textAlign = 'center';
 		canvas.lineWidth = 2;
 		canvas.fillText(self.name, x, y);
+		canvas.strokeStyle="#000000";
 		canvas.strokeText(self.name, x, y);
 	}
 	return self;
