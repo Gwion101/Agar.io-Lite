@@ -4,7 +4,7 @@ function Chat() {};
 var selfId;
 var socket;
 var input = document.getElementById('chatInput');
-var ul = document.getElementById('chatMessages');
+var ul = document.getElementById('chatMessageList');
 
 Chat.prototype.handleNetwork = function(socket) {
 
@@ -15,6 +15,7 @@ Chat.prototype.handleNetwork = function(socket) {
   		li = document.createElement("li");
   		li.appendChild(document.createTextNode(message));
   		ul.appendChild(li);
+  		ul.scrollTop = ul.scrollHeight;
   	});
 
   	socket.on('anouncement',function(data){
