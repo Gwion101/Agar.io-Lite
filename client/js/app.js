@@ -21,7 +21,7 @@ function validNick() {
     return regex.exec(playerNameInput.value) !== null;
 }
 
-socket.on('disconnect', function (data) {
+socket.on('disconnect', function () {
     endGame();
 });
 
@@ -98,7 +98,8 @@ function appLoop() {
 function startGame() {
 	//sanatize the player name.
     var playerName = playerNameInput.value.replace(/(<([^>]+)>)/ig, '');
-    socket.emit('playerJoined',{playerName:playerName});
+    var baseColor = '#ffffff'
+    socket.emit('playerJoined',{playerName,baseColor});
     //hide the login screen and hide the canvas.
     document.getElementById('gameAreaWrapper').style.display = 'block';
     document.getElementById('startMenuWrapper').style.display = 'none';

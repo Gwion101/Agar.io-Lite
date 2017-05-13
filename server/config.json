@@ -5,6 +5,7 @@
   "playerSize":80,
   "maxCursorDist":200,
   "defaultPlayerSpeed":2,
+  "defaultPlayerColor":"#ffffff",
   "pelletSize":20,
   "pelletDensity":200,
   "pelletColors":[

@@ -20,11 +20,20 @@ Game.prototype.handleNetwork = function(socket) {
 
 	this.socket = socket;
 
+	socket.on('playerInit', function({selfId,map,players,pellets,hazzards}){
+	  	if(selfId) 
+	  		self.selfId = selfId;
+	  	if(map)
+	  		self.map = new Map(map.mapWidth,map.mapHeight);
+	  	for(var i = 0; i < players.length; i++)
+	  		new Player(players[i]);
+	  	for(var i = 0; i < pellets.length; i++)
+	  		new Pellet(pellets[i]);
+	  	for(var i = 0; i < hazzards.length; i++)
+	  		new Hazzard(hazzards[i]);
+  	});
+
   	socket.on('init', function(data){
-	  	if(data.selfId) 
-	  		selfId = data.selfId;
-	  	if(data.map)
-	  		map = new Map(data.map);
 	  	for(var i = 0; i < data.players.length; i++)
 	  		new Player(data.players[i]);
 	  	for(var i = 0; i < data.pellets.length; i++)
@@ -80,7 +89,8 @@ Game.prototype.handleNetwork = function(socket) {
 Game.prototype.handleGraphics = function(canvas) {
 	if(!app.gameRunning)
 		return;
-	map.draw(canvas);
+	if(map !== undefined)
+		map.draw(canvas);
 	//draw pellets first so players will render over them.	
 	for(var i in Pellet.list)
 		Pellet.list[i].draw(canvas);
@@ -103,14 +113,14 @@ Game.prototype.newGame = function(){
 * Create new Player object.
 * @param {Object} the player object values.
 */
-var Player = function(param){
+var Player = function({id,x,y,size,baseColor,name}){
 	var self = {};
-	self.id = param.id;
-	self.x = param.x;
-	self.y = param.y;
-	self.size = param.size;
-	self.baseColor = param.baseColor;
-	self.name = param.name;
+	self.id = id;
+	self.x = x;
+	self.y = y;
+	self.size = size;
+	self.baseColor = baseColor;
+	self.name = name;
 	Player.list[self.id] = self;
 
 	self.draw = function(canvas){
@@ -139,13 +149,13 @@ Player.list = [];
 * Create new Pellet object.
 * @param {Object} the Pellet object values.
 */
-var Pellet = function(param){
+var Pellet = function({id,x,y,size,baseColor}){
 	var self = {};
-	self.id = param.id;
-	self.x = param.x;
-	self.y = param.y;
-	self.size = param.size;
-	self.baseColor = param.baseColor;
+	self.id = id;
+	self.x = x;
+	self.y = y;
+	self.size = size;
+	self.baseColor = baseColor;
 	Pellet.list[self.id] = self;
 
 	self.draw = function(canvas){
@@ -168,13 +178,13 @@ Pellet.list = [];
 * Create new Hazzard object.
 * @param {Object} the Hazzard object values.
 */
-var Hazzard = function(param){
+var Hazzard = function({id,x,y,size,baseColor}){
 	var self = {};
-	self.id = param.id;
-	self.x = param.x;
-	self.y = param.y;
-	self.size = param.size;
-	self.baseColor = param.baseColor;
+	self.id = id;
+	self.x = x;
+	self.y = y;
+	self.size = size;
+	self.baseColor = baseColor;
 	Hazzard.list[self.id] = self;
 
 	self.draw = function(canvas){
@@ -197,9 +207,9 @@ Hazzard.list = [];
 * Create new Map object.
 * @param {Object} the map object values.
 */
-var Map = function(param) {
-	self.mapWidth = param.mapWidth;
-	self.mapHeight = param.mapHeight;
+var Map = function(mapWidth,mapHeight) {
+	self.mapWidth = mapWidth;
+	self.mapHeight = mapHeight;
 	self.draw = function(canvas){
 		var x = screenWidth/2 - Player.list[selfId].x;
 		var y = screenHeight/2 - Player.list[selfId].y;

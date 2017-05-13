@@ -28,13 +28,12 @@ io.on('connection', function (socket) {
 	socket.id = uuid.v1(); //Generate a time based ID.
 	sockets[socket.id] = socket; // add socket to socket list.
 
-	socket.on('playerJoined', function(data){
-		Player.onConnect(socket,data);
+	socket.on('playerJoined', function({playerName,baseColor}){
+		Player.onConnect(socket,{playerName,baseColor});
 	});
 
-	socket.on('globalMessage', function(data){
-		var sender = Player.list[data.senderId].name;
-		var message = data.message;
+	socket.on('globalMessage', function({senderId,message}){
+		var sender = Player.list[senderId].name;
 		for (var i in sockets){
 			var socket = sockets[i];
 			socket.emit('newMessage',{
@@ -55,19 +54,20 @@ io.on('connection', function (socket) {
 //super class of all entitys in game.
 /**
 * Create new Entity object.
-* @param {Object} the entity object values.
+* @param {x:Number,y:Number,size:Number,baseColor:String,id:sting} 
+the entity object values.
 * @return {Object} the Entity object.
 */
-var Entity = function(param) {
+var Entity = function({x,y,size,baseColor,id}) {
 	//set object parameters.
 	var self = {
-		x:param.x||0,
-		y:param.y||0,
-		size:param.size||0,
-		id:param.id,
+		x:x||0,
+		y:y||0,
+		size:size||0,
+		id:id,
 		velocityX:0,
 		velocityY:0,
-		baseColor:param.baseColor||'#ffffff'
+		baseColor:baseColor||'#ffffff'
 	}
 
 	/**
@@ -126,20 +126,21 @@ var Entity = function(param) {
 
 /**
 * Create new Player object.
-* @param {Object} the player object values.
-* @return {Object} Player object
+* @param {x:Number,y:Number,size:Number,baseColor:String,id:sting,
+			name:String,defaultSpeed:Number} the player object values.
+* @return {object} Player object
 */
-var Player = function(param) {
+var Player = function({x,y,size,baseColor,id,name,defaultSpeed}) {
 	//Extend the entity object.
-	var self = Entity(param);
+	var self = Entity({x,y,size,baseColor,id});
 	self.mouseAngle = 0;
 	self.mouseDistance = 0;
-	self.name = param.name||'default';
-	self.defaultSpeed = param.speed;
+	self.name = name||'default';
+	self.defaultSpeed = defaultSpeed;
 
 	/**
 	* add entitys volume to self and calc size.
-	* @param {Object} the second entity
+	* @param {Object} the second entity whos volume you want to add.
 	*/
 	self.addVolume = function(ent){
 		self.size = Math.sqrt(Math.pow(self.size,2) + Math.pow(ent.size,2));
@@ -254,36 +255,32 @@ Player.getAllInitData = function() {
 /**
 * Get inital data for all players.
 * @param {Object} socket object.
-* @param {Object} data to initalise object.
+* @param {playerName:String, BaseColor:String} data to initalise player.
 */
-Player.onConnect = function(socket,data){
+Player.onConnect = function(socket,{playerName,baseColor}){
 	//construct player object
 	var player = Player({
 		x:Math.floor(mapWidth * Math.random()),
 		y:Math.floor(mapHeight * Math.random()),
 		size:config.playerSize,
-		speed:config.defaultPlayerSpeed,
+		defaultSpeed:config.defaultPlayerSpeed,
 		id:socket.id,
-		name:data.playerName,
-		color:data.color,
+		name:playerName,
+		baseColor:baseColor,
 	});
 
 	//On receving a mouse update, update the players mouse distance, and angle.
-	socket.on('mouseUpdate', function(data) {
-		player.mouseAngle = data.mouseAngle;
+	socket.on('mouseUpdate', function({mouseAngle,mouseDistance}) {
 		var maxDist = config.maxCursorDist;
-		var mouseDist = data.mouseDistance;
 		//clamp mouse distance to max distance.
-		player.mouseDistance = ((mouseDist < maxDist) ? mouseDist : maxDist);
-	});
-
-	//On player Joining create new player object.
-	socket.on('playerJoined', function(data){
-		player.name = data.playerName;
+		clampedMouseDist = ((mouseDistance < maxDist) ? mouseDistance : maxDist);
+		//update player values.
+		player.mouseDistance = clampedMouseDist;
+		player.mouseAngle = mouseAngle;
 	});
 
 	//emit 'init' to client with initialisation data.
-	socket.emit('init',{
+	socket.emit('playerInit',{
 		selfId:socket.id,
 		map:{mapWidth:mapWidth, mapHeight:mapHeight},
 		players:Player.getAllInitData(),
@@ -320,9 +317,9 @@ Player.onDisconnect = function(player){
 * @param {Object} the pellet object values.
 * @return {Object} Pellet object.
 */
-var Pellet = function(param) {
+var Pellet = function({x,y,size,baseColor,id}) {
 	//Extend the entity object.
-	var self = Entity(param);
+	var self = Entity({x,y,size,baseColor,id});
 	self.toRemove = false;
 
 	//retain super class function for overide.
@@ -405,9 +402,9 @@ Pellet.getAllInitData = function() {
 * @param {Object} the hazzard object values.
 * @return {Object} Hazzard object.
 */
-var Hazzard = function(param) {
+var Hazzard = function({x,y,size,baseColor,id}) {
 	//Extend the entity object.
-	var self = Entity(param);
+	var self = Entity({x,y,size,baseColor,id});
 
 	//retain super class function for overide.
 	var super_update = self.update;
