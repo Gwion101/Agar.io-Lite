@@ -8,7 +8,7 @@ An Agar.io inspired game, built from the ground up. Built on the NodeJS platform
 
 ## How it works
 
-The game itself isn’t overly complicated, the maths involved have been detailed in this pdf. The server calculates all the player movements and game mechanics and then emits them to the client players where it is rendered on a canvas. No game logic is done on the client side, only rendering and player input. This prevents manipulation to the fronted js to gain an unfair advantage when playing. 
+The game itself isn’t overly complicated, the maths involved have been detailed in [this](https://github.com/Gwion101/Agar.io-Lite/blob/master/AgarioGameMath.pdf) pdf. The server calculates all the player movements and game mechanics and then emits them to the client players where it is rendered on a canvas. No game logic is done on the client side, only rendering and player input. This prevents manipulation to the fronted js to gain an unfair advantage when playing. 
 
 ---
 
