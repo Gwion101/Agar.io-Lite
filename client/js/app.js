@@ -1,5 +1,8 @@
 var playerNameInput = document.getElementById('playerNameInput');
 var playerColorInput = document.getElementById('playerColorInput');
+var inputError = document.querySelector('#startMenu .input-error');
+var errorDisplay = document.querySelector('#startMenu .error-display');
+var joinBtn = document.getElementById("startButton");
 var socket = io();
 
 var screenWidth = window.innerWidth;
@@ -22,9 +25,21 @@ function validNick() {
     return regex.exec(playerNameInput.value) !== null;
 }
 
+socket.on('connect', function(){
+	joinBtn.disabled = false;
+	errorDisplay.style.display = 'none';
+});
+
 //
 socket.on('disconnect', function () {
-    endGame();
+    if(gameRunning) {
+    	document.getElementById('gameAreaWrapper').style.display = 'none';
+    	document.getElementById('startMenuWrapper').style.display = 'block';
+		gameRunning = false;
+	}
+    joinBtn.disabled = true;
+    errorDisplay.style.display = 'block';
+    errorDisplay.innerHTML = 'Error: Lost connection with server.';
 });
 
 //resize the canvas when the window resizes.
@@ -43,29 +58,30 @@ window.onload = function() {
     
     SetupSocket(socket);
 
-    var btn = document.getElementById('startButton'),
-    nickErrorText = document.querySelector('#startMenu .input-error');
-    btn.onclick = function () {
-        // check if the nick is valid
-        if (validNick()) {
-            startGame();
-        } else {
-            nickErrorText.style.display = 'inline';
-        }
+    joinBtn.onclick = function () {
+        validateAndJoin();
     };
 
     playerNameInput.addEventListener('keypress', function (event) {
         var key = event.which || event.keyCode;
 
         if (key === 13) { // enter key pressed
-            if (validNick()) {
-                startGame();
-            } else {
-                nickErrorText.style.display = 'inline';
-            }
+            validateAndJoin();
         }
     });
 };
+
+function validateAndJoin(){
+	// check if the nick is valid
+	if (validNick()) {
+        startGame();
+        inputError.style.display = 'none';
+    } else {
+    	inputError.innerHTML = 'Invallid name AlphaNumeric only.';
+        inputError.style.display = 'inline';
+        playerNameInput.value = '';
+    }
+}
 
 /**
 * setup sockets for chat and game objects.
@@ -88,9 +104,9 @@ window.requestAnimationFrame = (function(){
 
 function appLoop() {
 	requestAnimationFrame(appLoop);
-	canvas.clearRect(0,0,screenWidth,screenHeight);
 	//if the game is running update canvas.
 	if(gameRunning)
+		canvas.clearRect(0,0,screenWidth,screenHeight);
 		game.handleGraphics(canvas);
 }
 
@@ -114,7 +130,17 @@ function startGame() {
 */
 function endGame() {
 	//hide the canvas and show the login screen.
-	document.getElementById('gameAreaWrapper').style.display = 'none';
-    document.getElementById('startMenuWrapper').style.display = 'block';
 	gameRunning = false;
+	canvas.clearRect(0,0,screenWidth,screenHeight);
+    canvas.fillStyle = '#ffffff';
+	canvas.font = 'bold 80px Verdana';
+	canvas.textAlign = 'center';
+	canvas.lineWidth = 2;
+	canvas.fillText('Game Over', screenWidth/2, screenHeight/2);
+	canvas.strokeStyle="#000000";
+	canvas.strokeText('Game Over', screenWidth/2, screenHeight/2);
+	setTimeout(function() {
+		document.getElementById('gameAreaWrapper').style.display = 'none';
+    	document.getElementById('startMenuWrapper').style.display = 'block';
+	}, 4000);
 }
