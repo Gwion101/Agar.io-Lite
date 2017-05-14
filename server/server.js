@@ -177,10 +177,9 @@ var Player = function({x,y,size,baseColor,id,name,defaultSpeed}) {
 				removeData.players.push(self.id);
 				newRemoveData = true;
 				//send all connected a message that the player was consumed.
+				var anouncement = ""+ player.name + ' consumed ' + self.name;
 				for (var i in sockets){
-					sockets[i].emit('anouncement',{
-						anouncement:player.name + ' consumed ' + self.name,
-					});
+					sockets[i].emit('anouncement',anouncement);
 				}
 			}
 		}
@@ -290,9 +289,7 @@ Player.onConnect = function(socket,{playerName,baseColor}){
 
 	//send all connected users the message that the player has joined.
 	for (var i in sockets){
-		sockets[i].emit('anouncement',{
-			anouncement:player.name + ' has joined',
-		});
+		sockets[i].emit('anouncement',player.name + ' has joined');
 	}
 }
 
@@ -303,9 +300,7 @@ Player.onConnect = function(socket,{playerName,baseColor}){
 Player.onDisconnect = function(player){
 	//send all connected users the message that the player has left.
 	for (var i in sockets){
-		sockets[i].emit('anouncement',{
-			anouncement:player.name + ' has left',
-		});
+		sockets[i].emit('anouncement',player.name + ' has left');
 	}
 	//remove player from list.
 	delete Player.list[player.id];

@@ -10,16 +10,17 @@ Chat.prototype.handleNetwork = function(socket) {
 
 	this.socket = socket;
 
-  	socket.on('newMessage', function(data){
-  		message = data.sender + ': ' + data.message;
+  	socket.on('newMessage', function({sender,message}){
+  		newMessage = sender + ': ' + message;
   		li = document.createElement("li");
-  		li.appendChild(document.createTextNode(message));
+  		li.appendChild(document.createTextNode(newMessage));
   		ul.appendChild(li);
+  		//set scroll to bottom.
   		ul.scrollTop = ul.scrollHeight;
   	});
 
-  	socket.on('anouncement',function(data){
-  		message = 'Server: ' + data.anouncement;
+  	socket.on('anouncement',function(anouncement){
+  		message = 'Server: ' + anouncement;
   		li = document.createElement("li");
   		li.appendChild(document.createTextNode(message));
   		ul.appendChild(li);
