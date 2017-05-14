@@ -1,9 +1,11 @@
+var socket = io();
+
+//start menu components
 var playerNameInput = document.getElementById('playerNameInput');
 var playerColorInput = document.getElementById('playerColorInput');
 var inputError = document.querySelector('#startMenu .input-error');
 var errorDisplay = document.querySelector('#startMenu .error-display');
 var joinBtn = document.getElementById("startButton");
-var socket = io();
 
 var screenWidth = window.innerWidth;
 var screenHeight = window.innerHeight;
@@ -12,12 +14,12 @@ var canvas = c.getContext('2d');
 c.width = screenWidth; 
 c.height = screenHeight;
 
-
 var KEY_ENTER = 13;
 
 var game;
-var gameRunning;
 var chat;
+var gameRunning = false;
+
 
 // check if nick is valid alphanumeric characters (and underscores)
 function validNick() {
@@ -26,17 +28,19 @@ function validNick() {
 }
 
 socket.on('connect', function(){
+	//if the join button is disabled and error is visible, reset.
 	joinBtn.disabled = false;
 	errorDisplay.style.display = 'none';
 });
 
-//
 socket.on('disconnect', function () {
+    //if currently in game return to start menu.
     if(gameRunning) {
     	document.getElementById('gameAreaWrapper').style.display = 'none';
     	document.getElementById('startMenuWrapper').style.display = 'block';
 		gameRunning = false;
 	}
+	//there is no server to connect to disable join button and display error.
     joinBtn.disabled = true;
     errorDisplay.style.display = 'block';
     errorDisplay.innerHTML = 'Error: Lost connection with server.';
@@ -50,27 +54,34 @@ window.addEventListener('resize', function() {
     c.height = screenHeight;
 }, true);
 
+/**
+* when loaded setup page
+*/
 window.onload = function() {
     'use strict';
     game = new Game(self);//create a new game object.
     chat = new Chat(self);//create a new chat object.
+    
+    //setup loop for rendering gameplay.
     appLoop();
     
+    //setup sockets.
     SetupSocket(socket);
 
     joinBtn.onclick = function () {
         validateAndJoin();
     };
-
     playerNameInput.addEventListener('keypress', function (event) {
         var key = event.which || event.keyCode;
-
-        if (key === 13) { // enter key pressed
+        if (key === KEY_ENTER) { // enter key pressed
             validateAndJoin();
         }
     });
 };
 
+/**
+* Ensures all inputs are vaild before joining game.
+*/
 function validateAndJoin(){
 	// check if the nick is valid
 	if (validNick()) {
@@ -102,6 +113,9 @@ window.requestAnimationFrame = (function(){
             };
 })();
 
+/**
+* start the game.
+*/
 function appLoop() {
 	requestAnimationFrame(appLoop);
 	//if the game is running update canvas.
@@ -131,6 +145,7 @@ function startGame() {
 function endGame() {
 	//hide the canvas and show the login screen.
 	gameRunning = false;
+	//render game over text
 	canvas.clearRect(0,0,screenWidth,screenHeight);
     canvas.fillStyle = '#ffffff';
 	canvas.font = 'bold 80px Verdana';
@@ -139,6 +154,7 @@ function endGame() {
 	canvas.fillText('Game Over', screenWidth/2, screenHeight/2);
 	canvas.strokeStyle="#000000";
 	canvas.strokeText('Game Over', screenWidth/2, screenHeight/2);
+	//after 4 seconds, display the start menu.
 	setTimeout(function() {
 		document.getElementById('gameAreaWrapper').style.display = 'none';
     	document.getElementById('startMenuWrapper').style.display = 'block';

@@ -1,6 +1,6 @@
 {
   "name": "FP-Agario",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A basic clone of the Agar.io game.",
   "main": "server/server.js",
   "scripts": {

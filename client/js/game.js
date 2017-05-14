@@ -73,8 +73,11 @@ Game.prototype.handleNetwork = function(socket) {
 			return;
 		var x = -screenWidth/2 + event.clientX;
 		var y = -screenHeight/2 + event.clientY;
+		//calculate mouse angle relitive to player.
 		var angle = Math.atan2(y,x)/Math.PI * 180;
+		//calculate mouse distance from player using pythagoras.
 		var distance = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+		//emit mouse input data to server.
 		socket.emit('mouseUpdate',{
 			inputId:'mouseAngle',
 			mouseAngle:angle,
@@ -124,23 +127,24 @@ var Player = function({id,x,y,size,baseColor,name}){
 	Player.list[self.id] = self;
 
 	self.draw = function(canvas){
+		//calc player position on canvas relitive to player.
 		var x = self.x - Player.list[selfId].x + screenWidth/2;
 		var y = self.y - Player.list[selfId].y + screenHeight/2;
 		var radius = self.size/2;
-
+		//render player object.
 		canvas.beginPath();
 		canvas.fillStyle = self.baseColor;
 		canvas.arc(x,y,radius,0,2*Math.PI);
 		canvas.fill();
 		canvas.strokeStyle="#ffffff";
 		canvas.stroke();
-
+		//render player name.
 		canvas.fillStyle = '#ffffff';
 		canvas.font = 'bold ' + self.size/4 + 'px Verdana';
 		canvas.textAlign = 'center';
 		canvas.lineWidth = 2;
 		canvas.fillText(self.name, x, y);
-		canvas.strokeStyle="#000000";
+		canvas.strokeStyle='#000000';
 		canvas.strokeText(self.name, x, y);
 	}
 	return self;
@@ -162,16 +166,16 @@ var Pellet = function({id,x,y,size,baseColor}){
 	Pellet.list[self.id] = self;
 
 	self.draw = function(canvas){
+		//calc pellet position on canvas relitive to player.
 		var x = self.x - Player.list[selfId].x + screenWidth/2;
 		var y = self.y - Player.list[selfId].y + screenHeight/2;
 		var radius = self.size/2;
-
+		//render pellet.
 		canvas.beginPath();
 		canvas.fillStyle = self.baseColor;
 		canvas.arc(x,y,radius,0,2*Math.PI);
 		canvas.fill();
 	}
-
 	return self;
 }
 
@@ -191,16 +195,16 @@ var Hazzard = function({id,x,y,size,baseColor}){
 	Hazzard.list[self.id] = self;
 
 	self.draw = function(canvas){
+		//calc hazzard position on canvas relitive to player.
 		var x = self.x - Player.list[selfId].x + screenWidth/2;
 		var y = self.y - Player.list[selfId].y + screenHeight/2;
 		var radius = self.size/2;
-
+		//render pellet.
 		canvas.beginPath();
 		canvas.fillStyle = self.baseColor;
 		canvas.arc(x,y,radius,0,2*Math.PI);
 		canvas.fill();
 	}
-
 	return self;
 }
 
