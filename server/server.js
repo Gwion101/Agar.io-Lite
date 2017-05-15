@@ -511,8 +511,6 @@ setInterval(function(){
 			socket.emit('remove',removeData);
 		if(updateData !== [])
 			socket.emit('update',updateData);
-		if(updateLeaderboard)
-			socket.emit('updateLeaderboard',leaderboard);
 	}
 
 	//reset data.
