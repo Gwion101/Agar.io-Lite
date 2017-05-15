@@ -49,7 +49,7 @@ You should now be able to access the client at 'http://localhost:{port number}' 
 
 - Improve game mechanics. The game pace feels a little slow.
 - Inclusion of AI. Just to make the game more interesting when no one else is around.
-- Add leaderboard.
+- ~~Add leaderboard.~~
 - Make some more intelligent random spawning.
 
 ---
