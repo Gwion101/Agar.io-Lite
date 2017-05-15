@@ -14,6 +14,24 @@ canvas {
 	width: 100%; height: 100%;
 	margin: 0; padding: 0;
 }
+.leaderboardWindow {
+    position: absolute;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.7);
+    top:0px;
+    bottom: 0px;
+    left: 0px;
+    pointer-events: none;
+}
+
+.leaderboardWindow .leaderboardWindowList {
+    padding: 5px;
+    height: 100%;
+    margin: 0;
+    bottom: 20px;
+    list-style: none;
+    box-sizing: border-box;
+}
 
 .chatWindow {
     position: absolute;

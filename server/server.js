@@ -5,9 +5,6 @@ var io = require('socket.io')(http);
 var uuid = require('uuid');
 var config = require('./config.json');
 
-var leaderboard = []; // game leaderboard.
-var leaderboardChanged = false; // used to indicate leaderboard update.
-
 var sockets = {};
 var mapWidth =  config.mapWidth;
 var mapHeight = config.mapHeight;
@@ -210,7 +207,8 @@ var Player = function({x,y,size,baseColor,id,name,defaultSpeed}) {
 			id:self.id,
 			x:self.x,
 			y:self.y,
-			size:self.size
+			size:self.size,
+			name:self.name,
 		}
 	}
 
@@ -466,7 +464,9 @@ Hazzard.getAllInitData = function() {
 	return currentHazzards;
 }
 
-
+/**
+* Game loop.
+*/
 setInterval(function(){
 	var noOfPellets = Object.keys(Pellet.list).length;
  	// Spawn pellets untill it meets the pellet density.
@@ -511,7 +511,10 @@ setInterval(function(){
 			socket.emit('remove',removeData);
 		if(updateData !== [])
 			socket.emit('update',updateData);
+		if(updateLeaderboard)
+			socket.emit('updateLeaderboard',leaderboard);
 	}
+
 	//reset data.
 	newInitData = false;
 	newRemoveData = false;

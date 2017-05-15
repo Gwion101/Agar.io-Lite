@@ -33,18 +33,18 @@ Game.prototype.handleNetwork = function(socket) {
 	  		new Hazzard(hazzards[i]);
   	});
 
-  	socket.on('init', function(data){
-	  	for(var i = 0; i < data.players.length; i++)
-	  		new Player(data.players[i]);
-	  	for(var i = 0; i < data.pellets.length; i++)
-	  		new Pellet(data.pellets[i]);
-	  	for(var i = 0; i < data.hazzards.length; i++)
-	  		new Hazzard(data.hazzards[i]);
+  	socket.on('init', function({players,pellets,hazzards}){
+	  	for(var i = 0; i < players.length; i++)
+	  		new Player(players[i]);
+	  	for(var i = 0; i < pellets.length; i++)
+	  		new Pellet(pellets[i]);
+	  	for(var i = 0; i < hazzards.length; i++)
+	  		new Hazzard(hazzards[i]);
   	});
 
-  	socket.on('update', function(data){
-	  	for(var i = 0; i < data.players.length; i++){
-			var updatedPlayerData = data.players[i];
+  	socket.on('update', function({players}){
+	  	for(var i = 0; i < players.length; i++){
+			var updatedPlayerData = players[i];
 			var player = Player.list[updatedPlayerData.id];
 			if(player){
 				player.x = updatedPlayerData.x||player.x;
@@ -55,16 +55,16 @@ Game.prototype.handleNetwork = function(socket) {
 		}
   	});
 
-  	socket.on('remove',function(data){
-		for(var i = 0; i < data.players.length; i++){
-			if(data.players[i] === selfId){
+  	socket.on('remove',function({players,pellets}){
+		for(var i = 0; i < players.length; i++){
+			if(players[i] === selfId){
 				selfId = null; 
 				app.endGame();
 			}
-			delete Player.list[data.players[i]];
+			delete Player.list[players[i]];
 		}
-		for(var i = 0; i < data.pellets.length; i++){
-			delete Pellet.list[data.pellets[i]];
+		for(var i = 0; i < pellets.length; i++){
+			delete Pellet.list[pellets[i]];
 		}
 	});
 

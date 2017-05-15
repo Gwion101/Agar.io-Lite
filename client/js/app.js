@@ -18,6 +18,7 @@ var KEY_ENTER = 13;
 
 var game;
 var chat;
+var leaderboard;
 var gameRunning = false;
 
 
@@ -61,6 +62,7 @@ window.onload = function() {
     'use strict';
     game = new Game(self);//create a new game object.
     chat = new Chat(self);//create a new chat object.
+    leaderboard = new Leaderboard(self);//create a new leaderboard object.
     
     //setup loop for rendering gameplay.
     appLoop();
@@ -101,6 +103,7 @@ function validateAndJoin(){
 function SetupSocket(socket) {
   game.handleNetwork(socket);
   chat.handleNetwork(socket);
+  leaderboard.handleNetwork(socket);
 }
 
 //far smoother than setInterval ;)
